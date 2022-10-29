@@ -15,6 +15,6 @@ import lombok.Data;
 public class GetTopStories {
 	
 	@JsonProperty("results")
-	public List<Resultado> results;
+	private List<Resultado> results;
 	
 }
