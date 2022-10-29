@@ -1,15 +1,17 @@
 package org.example;
 
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.List;
+
+import org.example.model.GetTopStories;
+import org.example.model.Resultado;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 /**
  * Hello world!
@@ -28,17 +30,17 @@ public class App
                 .uri(URI.create(URL_API))
                 .build();
 
-        HttpResponse<String> response=client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        System.out.println(response.body());
-
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        //System.out.println(response.body());
+        
 
         //Parseo a Json usando JACKSON
         ObjectMapper mapper= new ObjectMapper();
-        List<Noticia> noticias= mapper.readValue(response.body(), new TypeReference<List<Noticia>>(){});
 
-        //Mostrando en consola
-        noticias.forEach(System.out::println);
-
+        GetTopStories rs = mapper.readValue(response.body(), GetTopStories.class);
+        for(Resultado my : rs.getResults()) {
+        	System.out.println("Mis resultados: " + my);
+        }
+        
     }
 }
